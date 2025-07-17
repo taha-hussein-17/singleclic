@@ -79,9 +79,9 @@ const [view, setView] = useState('grid'); // New state for view mode
         </div>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex gap-6 flex flex-col lg:flex-row gap-6">
         {/* Sidebar */}
-        <div className="w-64 bg-white p-4 rounded shadow-sm">
+        <div className="w-64 bg-white p-4 rounded shadow-sm ">
           <h2 className="font-semibold mb-2">Categories</h2>
           <ul className="text-sm text-gray-600 space-y-1">
             {[
@@ -124,7 +124,7 @@ const [view, setView] = useState('grid'); // New state for view mode
           </div>
 
           <div
-  className={`${
+    className={`${
     view === 'list'
       ? 'flex flex-col gap-4'
       : view === 'grid-compact'
