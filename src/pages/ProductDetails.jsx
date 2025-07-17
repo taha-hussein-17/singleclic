@@ -37,16 +37,17 @@ const [addingToCart, setAddingToCart] = useState(false);
 
   return (
     <div className="min-h-screen bg-white px-10 py-12">
-      <div className="flex gap-8">
+    <div className="flex flex-col lg:flex-row gap-8">
+
         {/* Left thumbnails */}
-        <div className="flex flex-col  gap-4">
+        <div className="flex lg:flex-col gap-4 justify-center">
           {[...Array(4)].map((_, i) => (
             <img
               key={i}
               src={product.image}
               alt="thumb"
               onClick={() => setSelectedImage(product.image)}
-              className="w-20 h-20 object-contain border cursor-pointer"
+              className="w-16 h-16 object-contain border cursor-pointer"
             />
           ))}
         </div>
