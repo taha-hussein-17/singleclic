@@ -5,12 +5,12 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-const [cart, setCart] = useState(() => {
-  const saved = localStorage.getItem('cart');
-  return saved ? JSON.parse(saved) : [];
-});
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem('cart');
+    return saved ? JSON.parse(saved) : [];
+  });
 
- //   cart من localStorage عند أول تحميل
+  // 🟡 تحميل السلة من localStorage عند أول تحميل
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -18,35 +18,45 @@ const [cart, setCart] = useState(() => {
     }
   }, []);
 
-  //  تتخزن cart في localStorage كل ما يتغير
+  // 🟢 حفظ السلة في localStorage كل ما تتغير
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-  //  Add to Cart
+
+  // ✅ إضافة منتج للسلة
   const addToCart = (product) => {
     setCart((prev) => {
       const exists = prev.find((item) => item.id === product.id);
       if (exists) {
-        // لو المنتج موجود زود الكمية
         return prev.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
-      // لو جديد، ضيفه مع quantity = 1
       return [...prev, { ...product, quantity: 1 }];
     });
   };
 
-  // ✅ Remove single item from cart
+  // ✅ حذف منتج واحد من السلة
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // ✅ Clear all cart
+  // ✅ مسح السلة بالكامل
   const clearCart = () => {
     setCart([]);
+  };
+
+  // ✅ تحديث كمية منتج معين
+  const updateQuantity = (id, quantity) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, quantity: quantity < 1 ? 1 : quantity }
+          : item
+      )
+    );
   };
 
   return (
@@ -56,6 +66,7 @@ const [cart, setCart] = useState(() => {
         addToCart,
         removeFromCart,
         clearCart,
+        updateQuantity,
       }}
     >
       {children}
